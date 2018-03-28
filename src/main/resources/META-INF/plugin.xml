@@ -1,0 +1,25 @@
+<idea-plugin>
+    <id>com.publitek.evntoggle</id>
+    <name>Environment Toggle</name>
+    <vendor email="by@fotosearch.com" url="https://github.com/publitek">Publitek Inc</vendor>
+
+    <description>Environment Toggle plugin for IntelliJ IDEA</description>
+
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.python</depends>
+
+    <project-components>
+        <component>
+            <implementation-class>EnvToggleComponent</implementation-class>
+        </component>
+    </project-components>
+
+
+    <actions>
+        <group id="MyPlugin.SampleMenu" text="Greeting" description="Greeting menu">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="Myplugin.Textboxes" class="EnvToggleAction" text="Hello" description="Says hello"/>
+        </group>
+    </actions>
+
+</idea-plugin>
