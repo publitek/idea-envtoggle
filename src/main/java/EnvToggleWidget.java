@@ -1,18 +1,22 @@
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
-import com.intellij.openapi.wm.impl.status.EditorBasedWidget;
 import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.util.ResourceBundle;
 
 
-public class EnvToggleWidget extends EditorBasedWidget implements StatusBarWidget.TextPresentation {
+public class EnvToggleWidget implements StatusBarWidget.Multiframe, StatusBarWidget.IconPresentation {
+    private static ResourceBundle myBundle = ResourceBundle.getBundle("messages.EnvToggle");
+    private Project myProject;
+    private StatusBar myStatusBar;
 
-    protected EnvToggleWidget(@NotNull Project project) {
-        super(project);
+    EnvToggleWidget(@NotNull Project project) {
+        myProject = project;
     }
 
     @NotNull
@@ -26,7 +30,6 @@ public class EnvToggleWidget extends EditorBasedWidget implements StatusBarWidge
         return EnvToggleWidget.class.getName();
     }
 
-    @Nullable
     @Override
     public WidgetPresentation getPresentation(@NotNull PlatformType type) {
         return this;
@@ -34,40 +37,35 @@ public class EnvToggleWidget extends EditorBasedWidget implements StatusBarWidge
 
     @Override
     public void install(@NotNull StatusBar statusBar) {
-        myProject = null;
+        myStatusBar = statusBar;
     }
 
     @Override
     public void dispose() {
-
+        myStatusBar = null;
+        myProject = null;
     }
 
+    @Override
     @NotNull
-    @Override
-    public String getText() {
-        return "HELLLOOOOO!!!";
-    }
-
-    @NotNull
-    @Override
-    public String getMaxPossibleText() {
-        return "75";
+    public Icon getIcon() {
+        return EnvToggleIcons.Cycle;
     }
 
     @Override
-    public float getAlignment() {
-        return 0;
+    public StatusBarWidget copy() {
+        return new EnvToggleWidget(myProject);
     }
 
-    @Nullable
     @Override
     public String getTooltipText() {
-        return "TOOL TIP";
+        return myBundle.getString("envtoggle.tooltip");
     }
 
-    @Nullable
     @Override
     public Consumer<MouseEvent> getClickConsumer() {
-        return null;
+        return mouseEvent -> {
+            Messages.showMessageDialog(myProject, "Hello world!", "Greeting", EnvToggleIcons.Cycle);
+        };
     }
 }
