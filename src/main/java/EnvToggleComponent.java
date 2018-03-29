@@ -25,7 +25,7 @@ public class EnvToggleComponent implements ProjectComponent {
 
     @NotNull
     public String getComponentName() {
-        return "GitflowComponent";
+        return "EnvToggleComponent";
     }
 
     public void projectOpened() {

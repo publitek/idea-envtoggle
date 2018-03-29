@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.publitek'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 apply plugin: 'java'
 
@@ -18,11 +18,7 @@ dependencies {
 }
 
 intellij {
-    alternativeIdePath '/home/byoungb/.local/share/JetBrains/Toolbox/apps/PyCharm-P/ch-0/173.4674.37'
-    version '2017.3'
-}
-patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+    alternativeIdePath pycharmPath
+    plugins pythonPlugin
+    version '2018.1'
 }

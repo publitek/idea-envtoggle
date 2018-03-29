@@ -2,12 +2,12 @@
     <id>com.publitek.evntoggle</id>
     <name>Environment Toggle</name>
     <vendor email="by@fotosearch.com" url="https://github.com/publitek">Publitek Inc</vendor>
-
     <description>Environment Toggle plugin for IntelliJ IDEA</description>
-
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.python</depends>
-
+    <extensions defaultExtensionNs="Pythonid">
+        <runConfigurationExtension implementation="EnvToggleExtension" id="envtogglePyCharm"/>
+    </extensions>
     <project-components>
         <component>
             <implementation-class>EnvToggleComponent</implementation-class>
