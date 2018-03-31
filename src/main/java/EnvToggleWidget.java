@@ -1,4 +1,7 @@
-import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.execution.ExecutionManager;
+import com.intellij.execution.runners.ExecutionUtil;
+import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.execution.ui.RunContentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
@@ -7,13 +10,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 
 public class EnvToggleWidget implements StatusBarWidget.Multiframe, StatusBarWidget.IconPresentation {
     private static ResourceBundle myBundle = ResourceBundle.getBundle("messages.EnvToggle");
-    private static String myKey = "envtoggle.MODE";
     private Project myProject;
     private StatusBar myStatusBar;
 
@@ -51,9 +53,7 @@ public class EnvToggleWidget implements StatusBarWidget.Multiframe, StatusBarWid
     @Override
     @NotNull
     public Icon getIcon() {
-        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(myProject);
-        String mode = propertiesComponent.getValue("envtoggle.MODE");
-        return (Objects.equals(mode, "PROD")) ? EnvToggleIcons.Red : EnvToggleIcons.Green;
+        return EnvToggleContainer.getIcon(myProject);
     }
 
     @Override
@@ -64,24 +64,19 @@ public class EnvToggleWidget implements StatusBarWidget.Multiframe, StatusBarWid
     @Override
     public String getTooltipText() {
         final String format = myBundle.getString("envtoggle.tooltip");
-        return String.format(format, getMode());
+        final String value = EnvToggleContainer.currentValue(myProject);
+        return MessageFormat.format(format, value);
     }
 
     @Override
     public Consumer<MouseEvent> getClickConsumer() {
         return mouseEvent -> {
-            toggleMode();
+            EnvToggleContainer.toggleValue(myProject);
+            final RunContentManager contentManager = ExecutionManager.getInstance(myProject).getContentManager();
+            for (RunContentDescriptor descriptor : contentManager.getAllDescriptors()) {
+                ExecutionUtil.restartIfActive(descriptor);
+            }
             myStatusBar.updateWidget(ID());
         };
-    }
-
-    private String getMode() {
-        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(myProject);
-        return propertiesComponent.getValue(myKey);
-    }
-
-    private void toggleMode() {
-        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(myProject);
-        propertiesComponent.setValue(myKey, (Objects.equals(getMode(), "PROD")) ? "DEV" : "PROD");
     }
 }
