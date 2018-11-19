@@ -12,12 +12,12 @@ import java.util.Map;
 
 public class EnvToggleExtension extends PythonRunConfigurationExtension {
     @Override
-    protected boolean isApplicableFor(@NotNull AbstractPythonRunConfiguration configuration) {
+    public boolean isApplicableFor(@NotNull AbstractPythonRunConfiguration configuration) {
         return true;
     }
 
     @Override
-    protected boolean isEnabledFor(@NotNull AbstractPythonRunConfiguration applicableConfiguration, @Nullable RunnerSettings runnerSettings) {
+    public boolean isEnabledFor(@NotNull AbstractPythonRunConfiguration applicableConfiguration, @Nullable RunnerSettings runnerSettings) {
         return true;
     }
 
