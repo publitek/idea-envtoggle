@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.publitek'
-version '1.6.0'
+version '1.7.0'
 
 apply plugin: 'java'
 
@@ -18,8 +18,8 @@ dependencies {
 }
 
 intellij {
-    version '2019.3'
-    alternativeIdePath pycharmPath
+    version '2020.1'
+//    alternativeIdePath pycharmPath
     plugins pythonPlugin
     pluginName 'envtoggle'
 }
